@@ -1,13 +1,12 @@
 const express = require("express");
 
 const app = express();
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use("/test", (req, res) => {
-  res.send("Server is listening");
-});
+// app.use("/users", userAuth);
 
-app.use("/new", (req, res) => {
-  res.send("Server is listening at new leve");
+app.get("/users/getAllUsers", userAuth, (req, res) => {
+  res.send("Here my Data");
 });
 
 app.listen(3000, () => {
