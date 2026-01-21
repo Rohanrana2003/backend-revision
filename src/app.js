@@ -1,14 +1,27 @@
 const express = require("express");
-
+const connectToDB = require("./config/database");
 const app = express();
-const { adminAuth, userAuth } = require("./middlewares/auth");
+const User = require("./models/user");
 
-// app.use("/users", userAuth);
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firtName: "Rohan",
+    lastName: "Rana",
+    emailId: "Rohan@gmail.com",
+    password: "rohanrohan",
+  });
 
-app.get("/users/getAllUsers", userAuth, (req, res) => {
-  res.send("Here my Data");
+  await user.save();
+
+  res.send("User Created Successfully!");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running");
-});
+connectToDB()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log("Server is running");
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected!!");
+  });
